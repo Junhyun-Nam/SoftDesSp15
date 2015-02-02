@@ -2,7 +2,7 @@
 """
 Created on Sun Feb  2 11:24:42 2014
 
-@author: YOUR NAME HERE
+@author: Junhyun Nam
 
 """
 
@@ -30,7 +30,18 @@ def get_complement(nucleotide):
     'G'
     """
     # TODO: implement this
+    if nucleotide == 'A':
+        return 'T'
+    elif nucleotide == 'T':
+        return 'A'
+    elif nucleotide == 'G':
+        return 'C'
+    elif nucleotide == 'C':
+        return 'G'
+    else:
+        return
     pass
+
 
 def get_reverse_complement(dna):
     """ Computes the reverse complementary sequence of DNA for the specfied DNA
@@ -44,6 +55,10 @@ def get_reverse_complement(dna):
     'TGAACGCGG'
     """
     # TODO: implement this
+    revdna = ''
+    for i in range(len(dna)):
+        revdna = get_complement(dna[i]) + revdna
+    return revdna
     pass
 
 def rest_of_ORF(dna):
@@ -59,6 +74,17 @@ def rest_of_ORF(dna):
     'ATGAGA'
     """
     # TODO: implement this
+    rest = ''
+    i = 0
+    while True:
+        cur_codon = dna[3*i:3*i+3]
+        if cur_codon == 'TAG' or cur_codon == 'TAA' or cur_codon == 'TGA':
+            break
+        rest += cur_codon
+        i += 1
+        if 3*i+3 > len(dna):
+            return dna
+    return rest
     pass
 
 def find_all_ORFs_oneframe(dna):
@@ -74,6 +100,17 @@ def find_all_ORFs_oneframe(dna):
     ['ATGCATGAATGTAGA', 'ATGTGCCC']
     """
     # TODO: implement this
+    i = 0
+    j = 0
+    ORFs_oneframe = []
+    while 3*i+3 < len(dna):
+        cur_codon = dna[3*i:3*i+3]
+        if cur_codon == 'ATG':
+            ORFs_oneframe.append(rest_of_ORF(dna[3*i:]))
+            i += len(ORFs_oneframe[j])/3
+            j += 1
+        i += 1
+    return ORFs_oneframe
     pass
 
 def find_all_ORFs(dna):
@@ -89,6 +126,11 @@ def find_all_ORFs(dna):
     ['ATGCATGAATGTAG', 'ATGAATGTAG', 'ATG']
     """
     # TODO: implement this
+    ORFs = []
+    ORFs += find_all_ORFs_oneframe(dna)
+    ORFs += find_all_ORFs_oneframe(dna[1:])
+    ORFs += find_all_ORFs_oneframe(dna[2:])
+    return ORFs
     pass
 
 def find_all_ORFs_both_strands(dna):
@@ -101,6 +143,10 @@ def find_all_ORFs_both_strands(dna):
     ['ATGCGAATG', 'ATGCTACATTCGCAT']
     """
     # TODO: implement this
+    ORFs_both_strands = []
+    ORFs_both_strands += find_all_ORFs(dna)
+    ORFs_both_strands += find_all_ORFs(get_reverse_complement(dna))
+    return ORFs_both_strands
     pass
 
 
