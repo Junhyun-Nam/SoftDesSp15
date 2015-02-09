@@ -159,7 +159,6 @@ def longest_ORF(dna):
     for i in range(num_ORFs):
         if len(ORFs[i]) > len(longest):
             longest = ORFs[i]
-        i += 1
     return longest
 
 
@@ -225,3 +224,8 @@ def gene_finder(dna, threshold):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
+
+
+dna = load_seq("./data/X73525.fa")
+threshold = longest_ORF_noncoding(dna, 1500)
+print gene_finder(dna, threshold)
