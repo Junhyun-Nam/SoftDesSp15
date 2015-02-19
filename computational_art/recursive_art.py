@@ -1,4 +1,4 @@
-""" TODO: Put your header comment here """
+""" TODO: Just done! """
 
 import random
 from PIL import Image
