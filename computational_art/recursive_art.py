@@ -1,4 +1,4 @@
-""" TODO: Just done! """
+""" TODO: Just done! - June """
 
 import random
 from PIL import Image
