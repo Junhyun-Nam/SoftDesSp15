@@ -34,6 +34,6 @@ def generate_sentence(words_map):
 	return sentence
 
 
-words_map = process_text('les_miserables.txt')
+words_map = process_text('alice_in_wonderland.txt')
 print generate_sentence(words_map)
 

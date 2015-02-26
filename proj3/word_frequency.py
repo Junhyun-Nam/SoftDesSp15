@@ -49,7 +49,7 @@ def subtract_common(freq, freq_word):
 	return top10_freq
 
 
-stat = process_text('les_miserables.txt')
+stat = process_text('alice_in_wonderland.txt')
 freq_word = inverse_dict(stat)
 freq = freq_word.keys()
 freq.sort()
