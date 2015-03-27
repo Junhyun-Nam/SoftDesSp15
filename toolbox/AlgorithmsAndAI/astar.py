@@ -7,7 +7,7 @@ class GridWorld():
     def __init__(self,width=10,height=10,cell_size=50):
         pygame.init()
         self.screen = pygame.display.set_mode((height*cell_size,width*cell_size))
-        pygame.display.set_caption = ('Grid World')
+        pygame.display.set_caption = ('Paul World')
         self.actors = {}
         self.width = width
         self.height = height
@@ -56,12 +56,18 @@ class GridWorld():
         except:
             return False
 
+<<<<<<< HEAD
     def _is_swamp(self,cell_coord):
         try: 
             actor = self.actors[cell_coord]
             return actor.is_swamp
         except:
             return False
+=======
+    def _add_swamp(self, mouse_pos):
+        #insert swamp code here.
+        pass
+>>>>>>> db34b81cf7b9a52769c47e860cf1960c41e7c004
 
     def _add_lava(self, mouse_pos):
         lava_coord = (mouse_pos[0]/50, mouse_pos[1]/50)
@@ -69,7 +75,17 @@ class GridWorld():
             if self.actors[lava_coord].unremovable == False:
                 self.actors.pop(lava_coord, None)
         else:
-            self.actors[lava_coord] = Actor( lava_coord, self, './images/lava.jpg' )
+            self.actors[lava_coord] = ObstacleTile( lava_coord, self, './images/lava.jpg', is_unpassable = True, terrain_cost = 0)
+
+    def get_terrain_cost(self, cell_coord):
+        try:
+            actor = self.actors[cell_coord]
+            if actor.terrain_cost is not None:
+                return actor.terrain_cost
+            else:
+                return 0
+        except:
+            return 0
 
     def _add_swamp(self, mouse_pos):
         swamp_coord = (mouse_pos[0]/50, mouse_pos[1]/50)
@@ -92,16 +108,24 @@ class GridWorld():
                 elif event.type is pygame.MOUSEBUTTONDOWN:
                     if self.add_tile_type == 'lava':
                         self._add_lava(event.pos)
+<<<<<<< HEAD
                     elif self.add_tile_type == 'swamp':
                         self._add_swamp(event.pos)
+=======
+                    #insert swamp code here
+>>>>>>> db34b81cf7b9a52769c47e860cf1960c41e7c004
                 elif event.type is pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.paul.run_astar(self.cake.cell_coordinates, self)
                         self.paul.get_path()
                     elif event.key == pygame.K_l:
                         self.add_tile_type = 'lava'
+<<<<<<< HEAD
                     elif event.key == pygame.K_s:
                         self.add_tile_type = 'swamp'
+=======
+                    #insert swamp code here
+>>>>>>> db34b81cf7b9a52769c47e860cf1960c41e7c004
 
 class Actor(object):
     def __init__(self, cell_coordinates, world, image_loc, unremovable = False, is_obstacle = True, is_swamp = False):
@@ -125,6 +149,11 @@ class Actor(object):
         screen = self.world.screen
         screen.blit(self.image,self.image_rect)
 
+class ObstacleTile(Actor):
+    def __init__(self, cell_coordinates, world, image_loc, terrain_cost=0, is_unpassable = True):
+        super(ObstacleTile, self).__init__(cell_coordinates, world, image_loc, unremovable = False, is_obstacle = is_unpassable)
+        self.terrain_cost = terrain_cost
+        
 class Cell():
     def __init__(self, draw_screen, coordinates, dimensions):
         self.draw_screen = draw_screen
@@ -165,10 +194,18 @@ class Paul(Actor):
 
     def get_open_adj_coords(self, coords):
         """returns list of valid coords that are adjacent to the argument, open, and not in the closed list."""
+<<<<<<< HEAD
         #Paul gets diagonals
         directions = [(1,0),(0,1),(-1,0),(0,-1),(1,1),(1,-1),(-1,1),(-1,-1),(2,0),(0,2),(-2,0),(0,-2)]
         costs = [1,1,1,1,3,3,3,3,8,8,8,8]
+=======
+        #modify directions and costs as needed
+        directions = [(1,0),(0,1),(-1,0),(0,-1)]
+        costs = [1,1,1,1]
+>>>>>>> db34b81cf7b9a52769c47e860cf1960c41e7c004
         adj_coords = map(lambda d: self.world._add_coords(coords,d), directions)
+        for i, coord in enumerate(adj_coords):
+            costs[i] += self.world.get_terrain_cost(coord)
         in_bounds = [self.world._is_in_grid(c) and not self.world._is_occupied(c) and c not in self.closed_list for c in adj_coords]
         swamps = [self.world._is_in_grid(c) and self.world._is_swamp(c) and c not in self.closed_list for c in adj_coords]
         adj_coords_swamp = [c for (idx,c) in enumerate(adj_coords) if swamps[idx]]
@@ -220,7 +257,6 @@ class Paul(Actor):
         cell_s.g_cost = 0
         cell_s.h_cost = self.get_h_cost(coord_s, destination_coord)
         self.open_list = [coord_s]
-#probably loop here
         while len(self.open_list) > 0:
             coord_s = self.get_lowest_cost_open_coord()
             cell_s = self.cells[coord_s]
@@ -229,7 +265,7 @@ class Paul(Actor):
             walkable_open_coords, costs = self.get_open_adj_coords(coord_s)
             for idx,coord in enumerate(walkable_open_coords):
                 cell = self.cells[coord]
-                g_cost = cell_s.g_cost + costs[idx] #g cost is going to be one larger than the previous adjacent square's g cost
+                g_cost = cell_s.g_cost + costs[idx] 
                 h_cost = self.get_h_cost(coord, destination_coord)
                 f_cost = g_cost + h_cost
                 if coord in self.open_list:

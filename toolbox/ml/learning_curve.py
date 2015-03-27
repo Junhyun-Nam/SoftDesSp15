@@ -20,7 +20,10 @@ test_accuracies = numpy.zeros(len(train_percentages))
 # TODO: your code here
 
 fig = plt.figure()
-plt.plot(train_percentages, test_accuracies)
-plt.xlabel('Percentage of Data Used for Training')
-plt.ylabel('Accuracy on Test Set')
+for i in range(10):
+	subplot = fig.add_subplot(5,2,i+1)
+	subplot.matshow(numpy.reshape(data.data[i],(8,8)), cmap = 'gray')
+#plt.plot(train_percentages, test_accuracies)
+#plt.xlabel('Percentage of Data Used for Training')
+#plt.ylabel('Accuracy on Test Set')
 plt.show()
