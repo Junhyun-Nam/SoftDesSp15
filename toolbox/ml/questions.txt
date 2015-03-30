@@ -1,0 +1,4 @@
+1. increasing with a decreasing rate but almost linear
+2. No
+3. 300
+4. When I changed C to 10^-1, the gradient decreases sharply as training percentage increases.
